@@ -1,157 +1,436 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gobuxi Stake</title>
-  <style>
-    body { margin:0; font-family:Arial, sans-serif; background:#0b1020; color:#f4f4f4; display:flex; }
-    .sidebar { width:200px; background:#151c33; height:100vh; padding:20px; }
-    .sidebar h2 { color:#f39c12; }
-    .sidebar a { display:block; padding:10px; color:#f4f4f4; text-decoration:none; margin-top:10px; border-radius:5px; }
-    .sidebar a:hover { background:#2c365e; }
-    .main { flex:1; padding:20px; }
-    header { display:flex; justify-content:space-between; align-items:center; background:#1e2745; padding:15px; border-radius:10px; }
-    header h1 { margin:0; color:#f39c12; }
-    #balance { font-weight:bold; color:#7aff9a; }
-    .games-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-top:30px; }
-    .game-card { background:#1e2745; border-radius:10px; padding:20px; text-align:center; cursor:pointer; transition:0.2s; }
-    .game-card:hover { background:#2c365e; }
-    #minesGame { display:none; text-align:center; margin-top:20px; }
-    .grid { display:grid; grid-template-columns:repeat(5,60px); gap:5px; justify-content:center; margin-top:20px; }
-    .cell { width:60px; height:60px; background:#1e2745; border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; }
-    .cell.revealed { background:#2c365e; }
-    .cell.bomb { background:#c0392b; }
-    button,input { margin-top:10px; padding:10px 20px; border:none; border-radius:5px; }
-    button { background:#f39c12; color:white; font-weight:bold; cursor:pointer; }
-    input { width:120px; text-align:center; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gobuxi Stake — Part 1 (Mines, Dice, Crash)</title>
+<style>
+  :root{
+    --bg:#0b1020; --card:#151c33; --card2:#1e2745; --accent:#f39c12;
+    --good:#7aff9a; --bad:#ff6b8b; --ui:#e9f1ff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font:500 16px/1.5 system-ui,Segoe UI,Arial; color:var(--ui);
+    background:
+      radial-gradient(1200px 600px at 20% 20%, #121b36, transparent 60%),
+      radial-gradient(1000px 700px at 80% 60%, #1a243f, transparent 60%),
+      linear-gradient(180deg, var(--bg), #111a33);
+    display:flex; min-height:100vh;
+  }
+  /* Sidebar */
+  .sidebar{
+    width:220px; background:var(--card); padding:20px; position:sticky; top:0; height:100vh;
+    border-right:1px solid #0e1430;
+  }
+  .brand{margin:0 0 14px; color:var(--accent); letter-spacing:.5px}
+  .balanceBox{
+    background:var(--card2); border-radius:10px; padding:12px; margin-bottom:14px;
+  }
+  .balanceBox b{color:var(--good)}
+  .nav a{
+    display:block; padding:10px 12px; border-radius:8px; text-decoration:none; color:var(--ui);
+    margin:6px 0; background:#131b34; border:1px solid #0f1630; transition:.15s;
+  }
+  .nav a:hover{background:#1b2445}
+  .nav a.active{outline:2px solid var(--accent)}
+  .addBtn{
+    display:block; width:100%; margin-top:8px; padding:8px 10px; border:0; border-radius:8px;
+    background:var(--accent); color:#fff; font-weight:700; cursor:pointer;
+  }
+
+  /* Main */
+  .main{flex:1; padding:20px; max-width:1200px; margin:0 auto}
+  header{
+    background:var(--card2); padding:14px 16px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;
+    border:1px solid #0f1630;
+  }
+  header h1{margin:0; font-size:18px; color:var(--accent)}
+  .pill{background:#121936; padding:8px 12px; border-radius:999px; border:1px solid #0f1630}
+  .good{color:var(--good)} .bad{color:var(--bad)}
+
+  /* Cards */
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:20px}
+  .card{
+    background:var(--card2); border:1px solid #0f1630; border-radius:12px; padding:16px;
+  }
+  .cta{display:inline-block; margin-top:10px; background:var(--accent); color:#fff; border:0; border-radius:8px; padding:10px 14px; cursor:pointer; font-weight:700}
+  .muted{opacity:.8}
+
+  /* Inputs & buttons */
+  input[type="number"], input[type="text"], select{
+    width:140px; background:#0f1733; color:var(--ui); border:1px solid #0e1430; border-radius:8px; padding:10px; margin:6px 6px 6px 0;
+  }
+  button{background:var(--accent); color:white; border:0; border-radius:8px; padding:10px 14px; cursor:pointer; font-weight:700}
+  button.secondary{background:#0f1733; border:1px solid #0e1430}
+  .row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+  .stat{display:inline-block; background:#0f1733; border:1px solid #0e1430; border-radius:8px; padding:8px 10px; margin-right:8px}
+  .spacer{height:10px}
+
+  /* MINES */
+  #minesView .gridBoard{
+    display:grid; grid-template-columns:repeat(5,64px); gap:8px; justify-content:center; margin:16px 0;
+  }
+  .cell{
+    width:64px; height:64px; background:#141c37; border-radius:10px; border:1px solid #0e1430; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:20px; user-select:none;
+  }
+  .cell.revealed{background:#1b2446}
+  .cell.bomb{background:#5b1f2a; border-color:#7a2633}
+
+  /* DICE */
+  #diceRoll{font-size:28px; font-weight:800; margin:8px 0}
+  .under{color:#72f5ff} .over{color:#b17dff}
+
+  /* CRASH */
+  #crashMult{font-size:48px; font-weight:900; margin:10px 0}
+  #crashStatus{min-height:24px}
+  .barWrap{height:10px; background:#0f1733; border:1px solid #0e1430; border-radius:999px; overflow:hidden}
+  .bar{height:100%; width:0%}
+</style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>Gobuxi</h2>
-    <a href="#" onclick="showHome()">🏠 Acasă</a>
-    <a href="#" onclick="startMines()">💣 Mines</a>
-  </div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="brand">GOBUXI</h2>
+    <div class="balanceBox">
+      Balance: <b id="sbBalance">0</b> 🪙
+      <button class="addBtn" id="addTestFunds" title="+1000 pentru test">+1000</button>
+    </div>
+    <nav class="nav">
+      <a href="#" data-view="homeView" class="active">🏠 Acasă</a>
+      <a href="#" data-view="minesView">💣 Mines</a>
+      <a href="#" data-view="diceView">🎲 Dice</a>
+      <a href="#" data-view="crashView">🚀 Crash</a>
+    </nav>
+    <p class="muted" style="margin-top:10px;font-size:12px">
+      Fun only. Fără bani reali. Balance salvat local (browser).
+    </p>
+  </aside>
 
-  <!-- Main -->
-  <div class="main">
+  <!-- MAIN -->
+  <main class="main">
     <header>
-      <h1>Gobuxi Stake</h1>
-      <p>Balance: <span id="balance">1000</span> 🪙</p>
+      <h1>Gobuxi Stake — Part 1</h1>
+      <div class="pill">Balance: <b class="good" id="topBalance">0</b> 🪙</div>
     </header>
 
-    <!-- Homepage -->
-    <div id="homePage">
-      <h2>Bine ai venit!</h2>
-      <p>Alege un joc pentru a începe să joci cu Gobuxi.</p>
-      <div class="games-grid">
-        <div class="game-card" onclick="startMines()">
-          <h3>Mines 💣</h3>
-          <p>Avoidă bombele și multiplică Gobuxi!</p>
+    <!-- HOME -->
+    <section id="homeView">
+      <div class="grid">
+        <div class="card">
+          <h3>💣 Mines</h3>
+          <p class="muted">Alege pariul, setează numărul de bombe, deschide celule și dă cashout la timp.</p>
+          <button class="cta" data-view="minesView">Joacă</button>
+        </div>
+        <div class="card">
+          <h3>🎲 Dice</h3>
+          <p class="muted">Alege Under/Over și ținta. Payout se ajustează după șansă.</p>
+          <button class="cta" data-view="diceView">Joacă</button>
+        </div>
+        <div class="card">
+          <h3>🚀 Crash</h3>
+          <p class="muted">Multiplicatorul urcă… până crapă. Cashout înainte de BOOM.</p>
+          <button class="cta" data-view="crashView">Joacă</button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Mines -->
-    <div id="minesGame">
-      <h2>Mines 💣</h2>
-      <p>Alege pariul și câte bombe vrei:</p>
-      <input type="number" id="betAmount" value="100" min="1"> Gobuxi<br>
-      <input type="number" id="bombCount" value="3" min="1" max="20"> Bombe<br>
-      <button onclick="startRound()">Start Round</button>
-      <div id="stats" style="margin-top:20px;">
-        <p><b>Pariu:</b> <span id="bet">0</span></p>
-        <p><b>Multiplicator:</b> <span id="multiplier">1.00</span>x</p>
-        <p><b>Câștig curent:</b> <span id="currentWin">0</span></p>
+    <!-- MINES -->
+    <section id="minesView" style="display:none">
+      <div class="card">
+        <h2>💣 Mines</h2>
+        <div class="row">
+          <label>Pariu (🪙): <input type="number" id="m_bet" min="1" value="100"></label>
+          <label>Bombe: <input type="number" id="m_bombs" min="1" max="20" value="3"></label>
+          <button id="m_start">Start rundă</button>
+          <button id="m_cash" class="secondary" disabled>Cash Out</button>
+        </div>
+        <div class="spacer"></div>
+        <div>
+          <span class="stat">Multiplicator: <b id="m_mult">1.00x</b></span>
+          <span class="stat">Câștig curent: <b id="m_win">0</b> 🪙</span>
+          <span class="stat">Pariu: <b id="m_betStat">0</b> 🪙</span>
+        </div>
+        <div class="gridBoard" id="m_board"></div>
+        <p class="muted" id="m_msg"></p>
       </div>
-      <div class="grid" id="grid"></div>
-      <button onclick="cashOut()">Cash Out</button>
-    </div>
-  </div>
+    </section>
 
-  <script>
-    let balance = localStorage.getItem("gobuxiBalance") ? parseInt(localStorage.getItem("gobuxiBalance")) : 1000;
-    let currentWin = 0, multiplier = 1.00, step = 0, bombs = [], bet = 0, roundActive = false;
+    <!-- DICE -->
+    <section id="diceView" style="display:none">
+      <div class="card">
+        <h2>🎲 Dice</h2>
+        <div class="row">
+          <label>Pariu (🪙): <input type="number" id="d_bet" min="1" value="100"></label>
+          <label>Țintă: <input type="number" id="d_target" min="2" max="98" value="50"></label>
+          <select id="d_mode">
+            <option value="under">Under</option>
+            <option value="over">Over</option>
+          </select>
+          <button id="d_roll">Roll</button>
+        </div>
+        <div class="spacer"></div>
+        <div>
+          <span class="stat">Șansă: <b id="d_chance">—</b>%</span>
+          <span class="stat">Payout potențial: <b id="d_payout">—</b> 🪙</span>
+        </div>
+        <div id="diceRoll">—</div>
+        <div id="d_result" class="muted"></div>
+      </div>
+    </section>
 
-    document.getElementById("balance").innerText = balance;
+    <!-- CRASH -->
+    <section id="crashView" style="display:none">
+      <div class="card">
+        <h2>🚀 Crash</h2>
+        <div class="row">
+          <label>Pariu (🪙): <input type="number" id="c_bet" min="1" value="100"></label>
+          <button id="c_start">Start</button>
+          <button id="c_cash" class="secondary" disabled>Cash Out</button>
+        </div>
+        <div class="spacer"></div>
+        <div id="crashMult">1.00x</div>
+        <div class="barWrap"><div class="bar" id="crashBar"></div></div>
+        <div id="crashStatus" class="muted"></div>
+      </div>
+    </section>
+  </main>
 
-    function saveBalance() {
-      localStorage.setItem("gobuxiBalance", balance);
-      document.getElementById("balance").innerText = balance;
-    }
+<script>
+/* =================== CORE STATE =================== */
+const BALANCE_KEY = "gobuxiBalance_v1";
+let balance = parseInt(localStorage.getItem(BALANCE_KEY) || "1000", 10);
+const fmt = n => new Intl.NumberFormat('ro-RO').format(n|0);
+const setBalance = (v) => {
+  balance = Math.max(0, Math.floor(v));
+  localStorage.setItem(BALANCE_KEY, String(balance));
+  document.getElementById('sbBalance').textContent = fmt(balance);
+  document.getElementById('topBalance').textContent = fmt(balance);
+};
+setBalance(balance);
+document.getElementById('addTestFunds').onclick = ()=> setBalance(balance + 1000);
 
-    function showHome() {
-      document.getElementById("homePage").style.display = "block";
-      document.getElementById("minesGame").style.display = "none";
-    }
+/* =================== NAV =================== */
+const views = ['homeView','minesView','diceView','crashView'];
+const showView = (id) => {
+  views.forEach(v => document.getElementById(v).style.display = (v===id?'block':'none'));
+  document.querySelectorAll('.nav a').forEach(a=>{
+    a.classList.toggle('active', a.dataset.view===id);
+  });
+};
+document.querySelectorAll('[data-view]').forEach(el=>{
+  el.addEventListener('click', e=>{ e.preventDefault(); showView(el.dataset.view); });
+});
 
-    function startMines() {
-      document.getElementById("homePage").style.display = "none";
-      document.getElementById("minesGame").style.display = "block";
-    }
+/* ================ MINES ================ */
+const m = {
+  betInp: document.getElementById('m_bet'),
+  bombsInp: document.getElementById('m_bombs'),
+  startBtn: document.getElementById('m_start'),
+  cashBtn: document.getElementById('m_cash'),
+  board: document.getElementById('m_board'),
+  multEl: document.getElementById('m_mult'),
+  winEl: document.getElementById('m_win'),
+  betStat: document.getElementById('m_betStat'),
+  msg: document.getElementById('m_msg'),
+  state: { active:false, bet:0, step:0, mult:1.00, win:0, bombs:[] }
+};
 
-    function startRound() {
-      bet = parseInt(document.getElementById("betAmount").value);
-      let bombCount = parseInt(document.getElementById("bombCount").value);
-
-      if (bet <= 0 || bet > balance) {
-        alert("Pariu invalid!");
-        return;
+function minesResetBoard(bombCount){
+  m.board.innerHTML = '';
+  m.state.step = 0; m.state.mult = 1.00; m.state.win = 0;
+  m.multEl.textContent = '1.00x';
+  m.winEl.textContent = '0';
+  m.msg.textContent = '';
+  m.state.bombs = [];
+  while(m.state.bombs.length < bombCount){
+    const r = Math.floor(Math.random()*25);
+    if(!m.state.bombs.includes(r)) m.state.bombs.push(r);
+  }
+  for(let i=0;i<25;i++){
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.addEventListener('click', ()=>{
+      if(!m.state.active || cell.classList.contains('revealed')) return;
+      if(m.state.bombs.includes(i)){
+        cell.classList.add('bomb'); cell.textContent = '💣';
+        m.msg.innerHTML = 'Boom! <span class="bad">Ai pierdut pariul.</span>';
+        m.state.active = false;
+        m.cashBtn.disabled = true;
+        // opțional: arată toate bombele
+        [...m.board.children].forEach((c, idx)=>{
+          if(m.state.bombs.includes(idx) && c!==cell){ c.classList.add('bomb'); c.textContent='💣'; }
+        });
+      }else{
+        m.state.step++;
+        m.state.mult = (1 + m.state.step*0.11);
+        m.state.win = Math.floor(m.state.bet * m.state.mult);
+        cell.classList.add('revealed'); cell.textContent = '✔️';
+        m.multEl.textContent = m.state.mult.toFixed(2)+'x';
+        m.winEl.textContent = fmt(m.state.win);
+        m.cashBtn.disabled = false;
       }
+    });
+    m.board.appendChild(cell);
+  }
+}
+m.startBtn.addEventListener('click', ()=>{
+  const bet = Math.floor(parseInt(m.betInp.value||'0',10));
+  const bombs = Math.min(24, Math.max(1, parseInt(m.bombsInp.value||'3',10)));
+  if(bet<=0 || bet>balance){ alert('Pariu invalid.'); return; }
+  setBalance(balance - bet);
+  m.state.active = true; m.state.bet = bet; m.betStat.textContent = fmt(bet);
+  m.cashBtn.disabled = true;
+  minesResetBoard(bombs);
+});
+m.cashBtn.addEventListener('click', ()=>{
+  if(!m.state.active || m.state.win<=0) return;
+  setBalance(balance + m.state.win);
+  m.msg.innerHTML = `Retras <b class="good">${fmt(m.state.win)}</b> 🪙. GG!`;
+  m.state.active = false;
+  m.cashBtn.disabled = true;
+});
 
-      balance -= bet;
-      saveBalance();
+/* ================ DICE ================ */
+const d = {
+  bet: document.getElementById('d_bet'),
+  target: document.getElementById('d_target'),
+  mode: document.getElementById('d_mode'),
+  rollBtn: document.getElementById('d_roll'),
+  chance: document.getElementById('d_chance'),
+  payout: document.getElementById('d_payout'),
+  rollEl: document.getElementById('diceRoll'),
+  result: document.getElementById('d_result')
+};
+function updateDiceInfo(){
+  const bet = Math.max(1, parseInt(d.bet.value||'0',10));
+  let t = Math.min(98, Math.max(2, parseInt(d.target.value||'50',10)));
+  d.target.value = t;
+  const mode = d.mode.value;
+  let chance = mode==='under' ? (t-1)/100 : (100-t)/100;
+  chance = Math.max(0.01, Math.min(0.98, chance));
+  // payout „fair” cu mic edge (5%)
+  const mult = 0.95 / chance;
+  const pay = Math.floor(bet * mult);
+  d.chance.textContent = (chance*100).toFixed(2);
+  d.payout.textContent = fmt(pay);
+}
+['input','change'].forEach(ev=>{
+  d.bet.addEventListener(ev, updateDiceInfo);
+  d.target.addEventListener(ev, updateDiceInfo);
+  d.mode.addEventListener(ev, updateDiceInfo);
+});
+updateDiceInfo();
 
-      currentWin = bet;
-      multiplier = 1.00;
-      step = 0;
-      bombs = [];
-      roundActive = true;
+d.rollBtn.addEventListener('click', ()=>{
+  const bet = Math.max(1, parseInt(d.bet.value||'0',10));
+  let t = Math.min(98, Math.max(2, parseInt(d.target.value||'50',10)));
+  const mode = d.mode.value;
+  if(bet>balance){ alert('Fonduri insuficiente.'); return; }
+  setBalance(balance - bet);
+  d.rollBtn.disabled = true;
 
-      while(bombs.length < bombCount){
-        let r = Math.floor(Math.random()*25);
-        if(!bombs.includes(r)) bombs.push(r);
-      }
+  // calc payout
+  let chance = mode==='under' ? (t-1)/100 : (100-t)/100;
+  chance = Math.max(0.01, Math.min(0.98, chance));
+  const mult = 0.95 / chance;
+  const payout = Math.floor(bet * mult);
 
-      document.getElementById("bet").innerText = bet;
-      document.getElementById("multiplier").innerText = multiplier.toFixed(2);
-      document.getElementById("currentWin").innerText = currentWin;
+  // animare mică a numărului
+  let shown = 1;
+  const anim = setInterval(()=>{
+    shown = Math.floor(1 + Math.random()*100);
+    d.rollEl.textContent = shown;
+  }, 35);
 
-      const grid=document.getElementById("grid");
-      grid.innerHTML="";
-      for(let i=0;i<25;i++){
-        const cell=document.createElement("div");
-        cell.className="cell";
-        cell.onclick=()=>{
-          if(!roundActive || cell.classList.contains("revealed")) return;
-          if(bombs.includes(i)){
-            cell.classList.add("bomb"); cell.innerHTML="💣";
-            alert("Boom! Ai pierdut 😢");
-            roundActive = false;
-          } else {
-            step++;
-            multiplier = (1+step*0.11);
-            currentWin = Math.floor(bet*multiplier);
-            cell.classList.add("revealed");
-            cell.innerHTML="✔️";
-            document.getElementById("multiplier").innerText = multiplier.toFixed(2);
-            document.getElementById("currentWin").innerText = currentWin;
-          }
-        };
-        grid.appendChild(cell);
-      }
+  setTimeout(()=>{
+    clearInterval(anim);
+    const roll = Math.floor(1 + Math.random()*100);
+    d.rollEl.textContent = roll;
+    const win = (mode==='under') ? (roll < t) : (roll > t);
+    if(win){
+      setBalance(balance + payout);
+      d.result.innerHTML = `✅ <span class="${mode==='under'?'under':'over'}">${mode.toUpperCase()}</span> ${t}. Ai câștigat <b class="good">${fmt(payout)}</b> 🪙`;
+    }else{
+      d.result.innerHTML = `❌ Ai pierdut pariul (${fmt(bet)}).`;
     }
+    d.rollBtn.disabled = false;
+    updateDiceInfo();
+  }, 900);
+});
 
-    function cashOut(){
-      if(roundActive && currentWin > 0){
-        balance += currentWin;
-        saveBalance();
-        alert("Ai retras "+currentWin+" Gobuxi! ✅");
-        roundActive = false;
-      }
+/* ================ CRASH ================ */
+const c = {
+  bet: document.getElementById('c_bet'),
+  startBtn: document.getElementById('c_start'),
+  cashBtn: document.getElementById('c_cash'),
+  multEl: document.getElementById('crashMult'),
+  status: document.getElementById('crashStatus'),
+  bar: document.getElementById('crashBar'),
+  state: { active:false, bet:0, mult:1.00, crashAt:1.10, timer:null }
+};
+
+// distribuție simplă pentru crash (1.05x – ~10x)
+function randomCrashAt(){
+  // Exponential-like: 1.03 + (-ln(U))*k
+  const U = Math.random();
+  const k = 0.6; // mai mare => crapa mai devreme
+  const val = 1.03 + (-Math.log(Math.max(1e-6, U))) * k;
+  return Math.min(10, Math.max(1.05, val));
+}
+
+function crashResetUI(){
+  c.multEl.textContent = '1.00x';
+  c.status.textContent = '';
+  c.bar.style.width = '0%';
+}
+
+c.startBtn.addEventListener('click', ()=>{
+  if(c.state.active) return;
+  const bet = Math.max(1, parseInt(c.bet.value||'0',10));
+  if(bet>balance){ alert('Fonduri insuficiente.'); return; }
+  setBalance(balance - bet);
+
+  c.state.active = true;
+  c.state.bet = bet;
+  c.state.mult = 1.00;
+  c.state.crashAt = randomCrashAt();
+  c.cashBtn.disabled = false;
+  c.startBtn.disabled = true;
+  crashResetUI();
+
+  // animație multiplier
+  c.state.timer = setInterval(()=>{
+    // creștere ușor accelerată
+    c.state.mult = (c.state.mult + (c.state.mult<2 ? 0.03 : c.state.mult<4 ? 0.05 : 0.08));
+    c.multEl.textContent = c.state.mult.toFixed(2)+'x';
+    // progres bar (până la 10x = 100%)
+    c.bar.style.width = Math.min(100, c.state.mult*10)+'%';
+
+    if(c.state.mult >= c.state.crashAt){
+      clearInterval(c.state.timer);
+      c.state.active = false;
+      c.cashBtn.disabled = true;
+      c.startBtn.disabled = false;
+      c.status.innerHTML = `💥 A crăpat la <b class="bad">${c.state.crashAt.toFixed(2)}x</b>. Pariu pierdut.`;
     }
-  </script>
+  }, 80);
+});
+
+c.cashBtn.addEventListener('click', ()=>{
+  if(!c.state.active) return;
+  clearInterval(c.state.timer);
+  const win = Math.floor(c.state.bet * c.state.mult);
+  setBalance(balance + win);
+  c.status.innerHTML = `✅ Cashout la <b class="good">${c.state.mult.toFixed(2)}x</b> — câștig <b class="good">${fmt(win)}</b> 🪙`;
+  c.state.active = false;
+  c.cashBtn.disabled = true;
+  c.startBtn.disabled = false;
+});
+
+/* default view */
+showView('homeView');
+</script>
 </body>
 </html>
