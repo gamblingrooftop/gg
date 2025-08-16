@@ -5,59 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gobuxi Stake</title>
   <style>
-    body {
-      margin:0; font-family:Arial, sans-serif; background:#0b1020; color:#f4f4f4;
-      display:flex;
-    }
-    /* Sidebar */
-    .sidebar {
-      width:200px; background:#151c33; height:100vh; padding:20px;
-    }
+    body { margin:0; font-family:Arial, sans-serif; background:#0b1020; color:#f4f4f4; display:flex; }
+    .sidebar { width:200px; background:#151c33; height:100vh; padding:20px; }
     .sidebar h2 { color:#f39c12; }
-    .sidebar a {
-      display:block; padding:10px; color:#f4f4f4; text-decoration:none;
-      margin-top:10px; border-radius:5px;
-    }
+    .sidebar a { display:block; padding:10px; color:#f4f4f4; text-decoration:none; margin-top:10px; border-radius:5px; }
     .sidebar a:hover { background:#2c365e; }
-
-    /* Main content */
-    .main {
-      flex:1; padding:20px;
-    }
-    header {
-      display:flex; justify-content:space-between; align-items:center;
-      background:#1e2745; padding:15px; border-radius:10px;
-    }
+    .main { flex:1; padding:20px; }
+    header { display:flex; justify-content:space-between; align-items:center; background:#1e2745; padding:15px; border-radius:10px; }
     header h1 { margin:0; color:#f39c12; }
     #balance { font-weight:bold; color:#7aff9a; }
-
-    .games-grid {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-      gap:20px; margin-top:30px;
-    }
-    .game-card {
-      background:#1e2745; border-radius:10px; padding:20px;
-      text-align:center; cursor:pointer; transition:0.2s;
-    }
+    .games-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-top:30px; }
+    .game-card { background:#1e2745; border-radius:10px; padding:20px; text-align:center; cursor:pointer; transition:0.2s; }
     .game-card:hover { background:#2c365e; }
-    
-    /* Mines game */
     #minesGame { display:none; text-align:center; margin-top:20px; }
-    .grid {
-      display:grid; grid-template-columns:repeat(5,60px);
-      gap:5px; justify-content:center; margin-top:20px;
-    }
-    .cell {
-      width:60px; height:60px; background:#1e2745; border-radius:5px;
-      cursor:pointer; display:flex; align-items:center; justify-content:center;
-      font-size:18px;
-    }
+    .grid { display:grid; grid-template-columns:repeat(5,60px); gap:5px; justify-content:center; margin-top:20px; }
+    .cell { width:60px; height:60px; background:#1e2745; border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; }
     .cell.revealed { background:#2c365e; }
     .cell.bomb { background:#c0392b; }
-    button {
-      margin-top:15px; padding:10px 20px; border:none; border-radius:5px;
-      background:#f39c12; color:white; font-weight:bold; cursor:pointer;
-    }
+    button,input { margin-top:10px; padding:10px 20px; border:none; border-radius:5px; }
+    button { background:#f39c12; color:white; font-weight:bold; cursor:pointer; }
+    input { width:120px; text-align:center; }
   </style>
 </head>
 <body>
@@ -90,8 +57,12 @@
     <!-- Mines -->
     <div id="minesGame">
       <h2>Mines 💣</h2>
-      <p>Avoidă bombele și multiplică Gobuxi!</p>
-      <div id="stats">
+      <p>Alege pariul și câte bombe vrei:</p>
+      <input type="number" id="betAmount" value="100" min="1"> Gobuxi<br>
+      <input type="number" id="bombCount" value="3" min="1" max="20"> Bombe<br>
+      <button onclick="startRound()">Start Round</button>
+      <div id="stats" style="margin-top:20px;">
+        <p><b>Pariu:</b> <span id="bet">0</span></p>
         <p><b>Multiplicator:</b> <span id="multiplier">1.00</span>x</p>
         <p><b>Câștig curent:</b> <span id="currentWin">0</span></p>
       </div>
@@ -102,10 +73,7 @@
 
   <script>
     let balance = localStorage.getItem("gobuxiBalance") ? parseInt(localStorage.getItem("gobuxiBalance")) : 1000;
-    let currentWin = 0;
-    let multiplier = 1.00;
-    let step = 0;
-    let bombs = [];
+    let currentWin = 0, multiplier = 1.00, step = 0, bombs = [], bet = 0, roundActive = false;
 
     document.getElementById("balance").innerText = balance;
 
@@ -122,38 +90,54 @@
     function startMines() {
       document.getElementById("homePage").style.display = "none";
       document.getElementById("minesGame").style.display = "block";
-      resetMines();
     }
 
-    function resetMines() {
-      currentWin=0; multiplier=1.00; step=0;
-      bombs=[];
-      while(bombs.length<3){
-        let r=Math.floor(Math.random()*25);
+    function startRound() {
+      bet = parseInt(document.getElementById("betAmount").value);
+      let bombCount = parseInt(document.getElementById("bombCount").value);
+
+      if (bet <= 0 || bet > balance) {
+        alert("Pariu invalid!");
+        return;
+      }
+
+      balance -= bet;
+      saveBalance();
+
+      currentWin = bet;
+      multiplier = 1.00;
+      step = 0;
+      bombs = [];
+      roundActive = true;
+
+      while(bombs.length < bombCount){
+        let r = Math.floor(Math.random()*25);
         if(!bombs.includes(r)) bombs.push(r);
       }
+
+      document.getElementById("bet").innerText = bet;
       document.getElementById("multiplier").innerText = multiplier.toFixed(2);
       document.getElementById("currentWin").innerText = currentWin;
+
       const grid=document.getElementById("grid");
       grid.innerHTML="";
       for(let i=0;i<25;i++){
         const cell=document.createElement("div");
         cell.className="cell";
         cell.onclick=()=>{
-          if(cell.classList.contains("revealed")) return;
+          if(!roundActive || cell.classList.contains("revealed")) return;
           if(bombs.includes(i)){
             cell.classList.add("bomb"); cell.innerHTML="💣";
             alert("Boom! Ai pierdut 😢");
-            currentWin=0; step=0; multiplier=1.00;
-            resetMines();
+            roundActive = false;
           } else {
             step++;
-            multiplier=(1+step*0.11);
-            currentWin=Math.floor(100*multiplier);
+            multiplier = (1+step*0.11);
+            currentWin = Math.floor(bet*multiplier);
             cell.classList.add("revealed");
             cell.innerHTML="✔️";
-            document.getElementById("multiplier").innerText=multiplier.toFixed(2);
-            document.getElementById("currentWin").innerText=currentWin;
+            document.getElementById("multiplier").innerText = multiplier.toFixed(2);
+            document.getElementById("currentWin").innerText = currentWin;
           }
         };
         grid.appendChild(cell);
@@ -161,11 +145,11 @@
     }
 
     function cashOut(){
-      if(currentWin>0){
+      if(roundActive && currentWin > 0){
         balance += currentWin;
         saveBalance();
         alert("Ai retras "+currentWin+" Gobuxi! ✅");
-        resetMines();
+        roundActive = false;
       }
     }
   </script>
