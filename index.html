@@ -3,99 +3,125 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gobuxi — 7 jocuri + Coduri</title>
+<title>Gobuxi — 7 jocuri + Coduri (Aesthetic)</title>
 <style>
   :root{
-    --bg:#0b1020; --card:#151c33; --card2:#1e2745; --accent:#f39c12;
-    --good:#7aff9a; --bad:#ff6b8b; --ui:#e9f1ff;
+    --bg:#0b1020; --card:#0f1530; --card2:#171f47; --accent:#ffb703;
+    --good:#7aff9a; --bad:#ff6b8b; --ui:#e9f1ff; --glow:#38bdf8;
   }
   *{box-sizing:border-box}
   body{
-    margin:0; font:500 16px/1.5 system-ui,Segoe UI,Arial; color:var(--ui);
+    margin:0; font:500 16px/1.5 Inter,system-ui,Segoe UI,Arial; color:var(--ui);
     background:
-      radial-gradient(1200px 600px at 20% 20%, #121b36, transparent 60%),
-      radial-gradient(1000px 700px at 80% 60%, #1a243f, transparent 60%),
-      linear-gradient(180deg, var(--bg), #111a33);
+      radial-gradient(1200px 600px at 20% 20%, #12214a, transparent 60%),
+      radial-gradient(900px 700px at 80% 60%, #1b2a58, transparent 60%),
+      linear-gradient(180deg, var(--bg), #0a1329);
     display:flex; min-height:100vh;
   }
   /* Sidebar */
   .sidebar{
-    width:220px; background:var(--card); padding:20px; position:sticky; top:0; height:100vh;
-    border-right:1px solid #0e1430; overflow:auto;
+    width:230px; background:rgba(14,21,48,.65); backdrop-filter:blur(10px);
+    padding:20px; position:sticky; top:0; height:100vh; border-right:1px solid #0d1333; overflow:auto;
   }
-  .brand{margin:0 0 14px; color:var(--accent); letter-spacing:.5px}
+  .brand{
+    margin:0 0 14px; color:var(--accent); letter-spacing:.6px; font-weight:900;
+    text-shadow:0 0 18px rgba(255,183,3,.35);
+  }
   .balanceBox{
-    background:var(--card2); border-radius:10px; padding:12px; margin-bottom:14px;
+    background:linear-gradient(145deg, rgba(23,31,71,.8), rgba(18,25,55,.7));
+    border-radius:14px; padding:14px; margin-bottom:14px; border:1px solid #0e1435; box-shadow:0 8px 20px rgba(0,0,0,.25);
   }
   .balanceBox b{color:var(--good)}
   .nav a{
-    display:block; padding:10px 12px; border-radius:8px; text-decoration:none; color:var(--ui);
-    margin:6px 0; background:#131b34; border:1px solid #0f1630; transition:.15s;
+    display:block; padding:11px 12px; border-radius:10px; text-decoration:none; color:var(--ui);
+    margin:6px 0; background:rgba(20,28,62,.7); border:1px solid #0f1638; transition:.15s;
   }
-  .nav a:hover{background:#1b2445}
-  .nav a.active{outline:2px solid var(--accent)}
-  .addBtn{ display:none } /* ascuns */
+  .nav a:hover{background:#1b2550}
+  .nav a.active{outline:2px solid var(--accent); box-shadow:0 0 12px rgba(255,183,3,.25) inset}
 
   /* Main */
-  .main{flex:1; padding:20px; max-width:1200px; margin:0 auto}
+  .main{flex:1; padding:20px; max-width:1280px; margin:0 auto}
   header{
-    background:var(--card2); padding:14px 16px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;
-    border:1px solid #0f1630;
+    background:linear-gradient(145deg, #141b40, #0e1736); padding:14px 16px; border-radius:14px;
+    display:flex; justify-content:space-between; align-items:center; border:1px solid #101744;
+    box-shadow:0 10px 24px rgba(0,0,0,.25), inset 0 0 20px rgba(56,189,248,.06);
   }
   header h1{margin:0; font-size:18px; color:var(--accent)}
-  .pill{background:#121936; padding:8px 12px; border-radius:999px; border:1px solid #0f1630}
+  .pill{background:#101946; padding:8px 12px; border-radius:999px; border:1px solid #0f1638; box-shadow:0 0 14px rgba(56,189,248,.18) inset}
   .good{color:var(--good)} .bad{color:var(--bad)}
   .muted{opacity:.85}
 
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:20px}
-  .card{background:var(--card2); border:1px solid #0f1630; border-radius:12px; padding:16px;}
-  .cta{display:inline-block; margin-top:10px; background:var(--accent); color:#fff; border:0; border-radius:8px; padding:10px 14px; cursor:pointer; font-weight:700}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:18px; margin-top:20px}
+  .card{
+    background:linear-gradient(180deg, rgba(23,31,71,.8), rgba(13,19,51,.85));
+    border:1px solid #101744; border-radius:14px; padding:16px; box-shadow:0 10px 22px rgba(0,0,0,.25);
+  }
+  .cta{
+    display:inline-block; margin-top:10px; background:linear-gradient(90deg, #ffb703, #ff7f11);
+    color:#111; border:0; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:800; box-shadow:0 6px 18px rgba(255,127,17,.35);
+  }
 
   input[type="number"], input[type="text"], select{
-    width:160px; background:#0f1733; color:var(--ui); border:1px solid #0e1430; border-radius:8px; padding:10px; margin:6px 6px 6px 0;
+    width:170px; background:#0e1739; color:var(--ui); border:1px solid #0f1638; border-radius:10px; padding:10px; margin:6px 6px 6px 0; outline:none;
+    box-shadow:0 3px 10px rgba(0,0,0,.25) inset;
   }
-  button{background:var(--accent); color:white; border:0; border-radius:8px; padding:10px 14px; cursor:pointer; font-weight:700}
-  button.secondary{background:#0f1733; border:1px solid #0e1430}
+  button{background:linear-gradient(90deg,#ffb703,#ff7f11); color:#111; border:0; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:800; box-shadow:0 6px 18px rgba(255,127,17,.35)}
+  button.secondary{background:#0f1739; color:#e9f1ff; border:1px solid #15205a; box-shadow:none}
   .row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
-  .stat{display:inline-block; background:#0f1733; border:1px solid #0e1430; border-radius:8px; padding:8px 10px; margin-right:8px}
+  .stat{display:inline-block; background:#0e1739; border:1px solid #0f1638; border-radius:10px; padding:8px 10px; margin-right:8px}
   .spacer{height:10px}
 
   /* Boards */
-  .board5{ display:grid; grid-template-columns:repeat(5,64px); gap:8px; justify-content:center; margin:16px 0; }
+  .board5{ display:grid; grid-template-columns:repeat(5,64px); gap:10px; justify-content:center; margin:16px 0; }
   .cell{
-    width:64px; height:64px; background:#141c37; border-radius:10px; border:1px solid #0e1430; cursor:pointer;
-    display:flex; align-items:center; justify-content:center; font-size:20px; user-select:none;
+    width:64px; height:64px; background:linear-gradient(180deg,#151f52,#0f1738); border-radius:12px; border:1px solid #0d1333; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:22px; user-select:none; box-shadow:0 6px 16px rgba(0,0,0,.35);
+    transition:transform .12s ease, box-shadow .12s ease;
   }
-  .cell.revealed{background:#1b2446}
-  .cell.bomb{background:#5b1f2a; border-color:#7a2633}
+  .cell:hover{ transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.4)}
+  .cell.revealed{background:linear-gradient(180deg,#1d2a66,#132054)}
+  .cell.bomb{background:linear-gradient(180deg,#6c1f2c,#4c1520); border-color:#812535}
 
   /* Dice */
-  #diceRoll{font-size:28px; font-weight:800; margin:8px 0}
+  #diceFaces{font-size:46px; letter-spacing:8px; text-shadow:0 0 18px rgba(56,189,248,.25)}
   .under{color:#72f5ff} .over{color:#b17dff}
 
   /* Crash */
-  #crashMult{font-size:48px; font-weight:900; margin:10px 0}
+  #crashMult{font-size:56px; font-weight:900; margin:8px 0; text-shadow:0 0 22px rgba(122,255,154,.18)}
   #crashStatus{min-height:24px}
-  .barWrap{height:10px; background:#0f1733; border:1px solid #0e1430; border-radius:999px; overflow:hidden}
-  .bar{height:100%; width:0%}
+  .barWrap{height:12px; background:#0f1739; border:1px solid #0e1435; border-radius:999px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,.2) inset}
+  .bar{height:100%; width:0%; background:linear-gradient(90deg,#38bdf8,#7aff9a); box-shadow:0 0 14px rgba(56,189,248,.45)}
 
-  /* Wheel */
-  .wheelRow{display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:10px}
-  .chip{padding:6px 10px; border-radius:999px; border:1px solid #0e1430; background:#0f1733}
-  .red{color:#ff7a7a} .blue{color:#72f5ff} .green{color:#7aff9a}
+  /* Wheel (canvas) */
+  .wheelWrap{display:flex; flex-direction:column; align-items:center; gap:10px}
+  #wheelCanvas{width:280px; height:280px; filter:drop-shadow(0 10px 24px rgba(0,0,0,.4))}
+  .pointer{width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-bottom:18px solid var(--accent); margin-top:-8px; filter:drop-shadow(0 6px 12px rgba(255,183,3,.4))}
+
+  /* Coinflip (card flip) */
+  .coin{
+    width:120px;height:120px;border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff6, transparent 35%), linear-gradient(145deg,#1f2b62,#0f1738);
+    display:flex; align-items:center; justify-content:center; font-size:44px; border:1px solid #122055;
+    box-shadow:inset 0 8px 24px rgba(0,0,0,.35), 0 8px 18px rgba(0,0,0,.35);
+    transform-style:preserve-3d; transition:transform .6s;
+  }
+  .flip{ transform:rotateY(540deg) }
+  .star{color:#ffd166; text-shadow:0 0 14px rgba(255,209,102,.45)}
+  .heart{color:#ff6b8b; text-shadow:0 0 14px rgba(255,107,139,.45)}
 
   /* Tower */
-  .tower{display:flex; flex-direction:column; gap:8px; align-items:center; margin-top:12px}
-  .towerRow{display:flex; gap:8px}
-  .tw{width:80px;height:50px;border-radius:8px;border:1px solid #0e1430;background:#141c37;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-  .tw.safe{background:#1b2446} .tw.bmb{background:#5b1f2a}
+  .tower{display:flex; flex-direction:column; gap:10px; align-items:center; margin-top:12px}
+  .towerRow{display:flex; gap:10px}
+  .tw{width:90px;height:56px;border-radius:10px;border:1px solid #0d1333;background:linear-gradient(180deg,#152054,#0f1738);display:flex;align-items:center;justify-content:center;cursor:pointer; font-size:20px; box-shadow:0 6px 16px rgba(0,0,0,.35)}
+  .tw.safe{background:linear-gradient(180deg,#203173,#17245e)}
+  .tw.bmb{background:linear-gradient(180deg,#6c1f2c,#4c1520)}
   .levelTag{font-size:12px; opacity:.8}
 
   /* Toast */
   #toast{
     position:fixed; left:50%; top:20px; transform:translateX(-50%);
-    background:#121936; border:1px solid #0e1430; color:#e9f1ff;
-    padding:10px 14px; border-radius:8px; font-weight:700; display:none; z-index:99999;
+    background:#121936; border:1px solid #0e1435; color:#e9f1ff;
+    padding:10px 14px; border-radius:10px; font-weight:800; display:none; z-index:99999;
+    box-shadow:0 8px 18px rgba(0,0,0,.35)
   }
 </style>
 </head>
@@ -105,15 +131,14 @@
     <h2 class="brand">GOBUXI</h2>
     <div class="balanceBox">
       Balance: <b id="sbBalance">0</b> 🪙
-      <button class="addBtn" id="addTestFunds">+1000</button>
     </div>
     <nav class="nav">
       <a href="#" data-view="homeView" class="active">🏠 Acasă</a>
       <a href="#" data-view="minesView">💣 Mines</a>
       <a href="#" data-view="diceView">🎲 Dice</a>
       <a href="#" data-view="crashView">🚀 Crash</a>
-      <a href="#" data-view="coinView">🪙 Coinflip</a>
-      <a href="#" data-view="wheelView">🎡 Wheel</a>
+      <a href="#" data-view="coinView">⭐/❤️ Coinflip</a>
+      <a href="#" data-view="wheelView">🎡 Roulette</a>
       <a href="#" data-view="limboView">⚡ Limbo</a>
       <a href="#" data-view="towerView">🏰 Tower</a>
       <a href="#" data-view="codesView">🔑 Coduri</a>
@@ -126,7 +151,7 @@
   <!-- MAIN -->
   <main class="main">
     <header>
-      <h1>Gobuxi — 7 jocuri + Coduri</h1>
+      <h1>Gobuxi — 7 jocuri + Coduri (Aesthetic)</h1>
       <div class="pill">Balance: <b class="good" id="topBalance">0</b> 🪙</div>
     </header>
 
@@ -136,12 +161,12 @@
     <section id="homeView">
       <div class="grid">
         <div class="card"><h3>💣 Mines</h3><p class="muted">Pariu + nr. bombe. Deschizi celule & dai cashout.</p><button class="cta" data-view="minesView">Joacă</button></div>
-        <div class="card"><h3>🎲 Dice</h3><p class="muted">Under/Over cu țintă 2–98. Payout dinamic.</p><button class="cta" data-view="diceView">Joacă</button></div>
+        <div class="card"><h3>🎲 Dice</h3><p class="muted">Under/Over pe suma a 2 zaruri. Payout corect (distribuție 2–12).</p><button class="cta" data-view="diceView">Joacă</button></div>
         <div class="card"><h3>🚀 Crash</h3><p class="muted">Urcă multiplicatorul. Cashout înainte să „crape”.</p><button class="cta" data-view="crashView">Joacă</button></div>
-        <div class="card"><h3>🪙 Coinflip</h3><p class="muted">Heads/Tails. Payout 1.98×.</p><button class="cta" data-view="coinView">Joacă</button></div>
-        <div class="card"><h3>🎡 Wheel</h3><p class="muted">Alege Red/Blue 2× sau Green 14×.</p><button class="cta" data-view="wheelView">Joacă</button></div>
-        <div class="card"><h3>⚡ Limbo</h3><p class="muted">Setezi target (1.10–10×). Win dacă roll ≥ target.</p><button class="cta" data-view="limboView">Joacă</button></div>
-        <div class="card"><h3>🏰 Tower</h3><p class="muted">3 cărămizi/level, una e bombă. Urcă și cashout.</p><button class="cta" data-view="towerView">Joacă</button></div>
+        <div class="card"><h3>⭐/❤️ Coinflip</h3><p class="muted">Alege ⭐ sau ❤️. Flip 3D. Payout 1.98×.</p><button class="cta" data-view="coinView">Joacă</button></div>
+        <div class="card"><h3>🎡 Roulette</h3><p class="muted">Roată reală pe canvas: Red/Blue 2×, Green 14×.</p><button class="cta" data-view="wheelView">Joacă</button></div>
+        <div class="card"><h3>⚡ Limbo</h3><p class="muted">Țintă (1.10–10×). Win dacă roll ≥ țintă.</p><button class="cta" data-view="limboView">Joacă</button></div>
+        <div class="card"><h3>🏰 Tower</h3><p class="muted">3 cărămizi/level (🧱). Una e bombă 💣. Urcă & retrage.</p><button class="cta" data-view="towerView">Joacă</button></div>
       </div>
     </section>
 
@@ -150,7 +175,7 @@
       <div class="card">
         <h2>💣 Mines</h2>
         <div class="row">
-          <label>Pariu (🪙): <input type="number" id="m_bet" min="1" value="100"></label>
+          <label>Pariu: <input type="number" id="m_bet" min="1" value="100"></label>
           <label>Bombe: <input type="number" id="m_bombs" min="1" max="20" value="3"></label>
           <button id="m_start">Start</button>
           <button id="m_cash" class="secondary" disabled>Cash Out</button>
@@ -166,14 +191,14 @@
       </div>
     </section>
 
-    <!-- DICE -->
+    <!-- DICE (2 dice, sum 2..12) -->
     <section id="diceView" style="display:none">
       <div class="card">
         <h2>🎲 Dice</h2>
         <div class="row">
           <label>Pariu: <input type="number" id="d_bet" min="1" value="100"></label>
-          <label>Țintă: <input type="number" id="d_target" min="2" max="98" value="50"></label>
-          <select id="d_mode"><option value="under">Under</option><option value="over">Over</option></select>
+          <label>Țintă sumă: <input type="number" id="d_target" min="3" max="11" value="7"></label>
+          <select id="d_mode"><option value="under">Under (suma &lt; țintă)</option><option value="over">Over (suma &gt; țintă)</option></select>
           <button id="d_roll">Roll</button>
         </div>
         <div class="spacer"></div>
@@ -181,7 +206,7 @@
           <span class="stat">Șansă: <b id="d_chance">—</b>%</span>
           <span class="stat">Payout potențial: <b id="d_payout">—</b> 🪙</span>
         </div>
-        <div id="diceRoll">—</div>
+        <div id="diceFaces">— —</div>
         <div id="d_result" class="muted"></div>
       </div>
     </section>
@@ -202,27 +227,29 @@
       </div>
     </section>
 
-    <!-- COINFLIP -->
+    <!-- COINFLIP (⭐ vs ❤️) -->
     <section id="coinView" style="display:none">
       <div class="card">
-        <h2>🪙 Coinflip</h2>
+        <h2>⭐/❤️ Coinflip</h2>
         <div class="row">
           <label>Pariu: <input type="number" id="cf_bet" min="1" value="100"></label>
-          <select id="cf_pick"><option value="H">Heads</option><option value="T">Tails</option></select>
+          <select id="cf_pick"><option value="star">⭐ Star</option><option value="heart">❤️ Heart</option></select>
           <button id="cf_flip">Flip</button>
         </div>
         <div class="spacer"></div>
         <div class="stat">Payout: <b>1.98×</b></div>
-        <div id="cf_show" style="font-size:28px;font-weight:800;margin:10px 0">—</div>
+        <div style="display:flex;justify-content:center;margin:12px 0">
+          <div class="coin" id="coin"><span id="coinSymbol" class="star">⭐</span></div>
+        </div>
         <div id="cf_msg" class="muted"></div>
       </div>
     </section>
 
-    <!-- WHEEL -->
+    <!-- WHEEL (roulette canvas) -->
     <section id="wheelView" style="display:none">
       <div class="card">
-        <h2>🎡 Wheel</h2>
-        <p class="muted">Red/Blue plătește <b>2×</b>, Green plătește <b>14×</b>. (prob. Green mică)</p>
+        <h2>🎡 Roulette</h2>
+        <p class="muted">Red/Blue plătește <b>2×</b>, Green plătește <b>14×</b>.</p>
         <div class="row">
           <label>Pariu: <input type="number" id="wh_bet" min="1" value="100"></label>
           <select id="wh_pick">
@@ -233,13 +260,11 @@
           <button id="wh_spin">Spin</button>
         </div>
         <div class="spacer"></div>
-        <div class="wheelRow">
-          <span class="chip red">Red</span>
-          <span class="chip blue">Blue</span>
-          <span class="chip green">Green</span>
+        <div class="wheelWrap">
+          <div class="pointer"></div>
+          <canvas id="wheelCanvas" width="560" height="560"></canvas>
         </div>
-        <div id="wh_res" style="font-size:28px;font-weight:800;margin:10px 0">—</div>
-        <div id="wh_msg" class="muted"></div>
+        <div id="wh_msg" class="muted" style="text-align:center;margin-top:8px"></div>
       </div>
     </section>
 
@@ -247,10 +272,10 @@
     <section id="limboView" style="display:none">
       <div class="card">
         <h2>⚡ Limbo</h2>
-        <p class="muted">Setezi target (1.10–10.00×). Win dacă roll ≥ target. Payout ~ 0.97 × target.</p>
+        <p class="muted">Țintă (1.10–10×). Win dacă roll ≥ țintă. Payout ~ 0.97 × țintă.</p>
         <div class="row">
           <label>Pariu: <input type="number" id="lb_bet" min="1" value="100"></label>
-          <label>Target (×): <input type="number" id="lb_target" step="0.01" min="1.1" max="10" value="2.00"></label>
+          <label>Țintă ×: <input type="number" id="lb_target" step="0.01" min="1.1" max="10" value="2.00"></label>
           <button id="lb_go">GO</button>
         </div>
         <div class="spacer"></div>
@@ -260,11 +285,11 @@
       </div>
     </section>
 
-    <!-- TOWER -->
+    <!-- TOWER (FIXED) -->
     <section id="towerView" style="display:none">
       <div class="card">
         <h2>🏰 Tower</h2>
-        <p class="muted">8 niveluri. La fiecare nivel ai 3 cărămizi (1 bombă). Câștigul crește cu fiecare pas. Poți retrage oricând.</p>
+        <p class="muted">8 niveluri. La fiecare nivel ai 3 cărămizi 🧱 (1 bombă 💣). Urcă și poți retrage oricând.</p>
         <div class="row">
           <label>Pariu: <input type="number" id="tw_bet" min="1" value="100"></label>
           <button id="tw_start">Start</button>
@@ -285,7 +310,7 @@
     <section id="codesView" style="display:none">
       <div class="card">
         <h2>🔑 Coduri Gobuxi</h2>
-        <p class="muted">Introdu un cod. Fiecare cod poate fi folosit o singură dată pe acest device.</p>
+        <p class="muted">Introdu un cod (o singură dată / device).</p>
         <div class="row">
           <input type="text" id="codeInput" placeholder="ex: makeitrain" />
           <button id="codeRedeem">Activează codul</button>
@@ -300,7 +325,7 @@
 
 <script>
 /* =================== CORE STATE =================== */
-const BALANCE_KEY = "gobuxiBalance_v2";
+const BALANCE_KEY = "gobuxiBalance_aesthetic_v1";
 let balance = parseInt(localStorage.getItem(BALANCE_KEY) || "1000", 10);
 const fmt = n => new Intl.NumberFormat('ro-RO').format(n|0);
 const setBalance = (v) => {
@@ -373,7 +398,7 @@ function minesResetBoard(bombCount){
         m.state.step++;
         m.state.mult = (1 + m.state.step*0.11);
         m.state.win = Math.floor(m.state.bet * m.state.mult);
-        cell.classList.add('revealed'); cell.textContent = '✔️';
+        cell.classList.add('revealed'); cell.textContent = '🧱';
         m.multEl.textContent = m.state.mult.toFixed(2)+'x';
         m.winEl.textContent = fmt(m.state.win);
         m.cashBtn.disabled = false;
@@ -383,9 +408,9 @@ function minesResetBoard(bombCount){
   }
 }
 m.startBtn.addEventListener('click', ()=>{
-  const bet = Math.floor(parseInt(m.betInp.value||'0',10));
+  const bet = Math.max(1, Math.floor(parseInt(m.betInp.value||'0',10)));
   const bombs = Math.min(24, Math.max(1, parseInt(m.bombsInp.value||'3',10)));
-  if(bet<=0 || bet>balance){ alert('Pariu invalid.'); return; }
+  if(bet>balance){ alert('Fonduri insuficiente.'); return; }
   setBalance(balance - bet);
   m.state.active = true; m.state.bet = bet; m.betStat.textContent = fmt(bet);
   m.cashBtn.disabled = true;
@@ -394,12 +419,14 @@ m.startBtn.addEventListener('click', ()=>{
 m.cashBtn.addEventListener('click', ()=>{
   if(!m.state.active || m.state.win<=0) return;
   setBalance(balance + m.state.win);
-  m.msg.innerHTML = `Retras <b class="good">${fmt(m.state.win)}</b> 🪙. GG!`;
+  m.msg.innerHTML = `✅ Retras <b class="good">${fmt(m.state.win)}</b> 🪙`;
   m.state.active = false;
   m.cashBtn.disabled = true;
 });
 
-/* ================ DICE ================ */
+/* ================ DICE (2 zaruri) ================ */
+// distribuția sumelor 2..12 (număr combinații din 36)
+const sumCombos = {2:1,3:2,4:3,5:4,6:5,7:6,8:5,9:4,10:3,11:2,12:1};
 const d = {
   bet: document.getElementById('d_bet'),
   target: document.getElementById('d_target'),
@@ -407,17 +434,28 @@ const d = {
   rollBtn: document.getElementById('d_roll'),
   chance: document.getElementById('d_chance'),
   payout: document.getElementById('d_payout'),
-  rollEl: document.getElementById('diceRoll'),
+  faces: document.getElementById('diceFaces'),
   result: document.getElementById('d_result')
 };
+const dieChar = n=> String.fromCodePoint(0x2680 + (n-1)); // ⚀..⚅
+
+function diceChance(mode, t){
+  let wins=0;
+  for(let s=2;s<=12;s++){
+    const hit = mode==='under' ? (s < t) : (s > t);
+    if(hit) wins += sumCombos[s];
+  }
+  return wins/36;
+}
 function updateDiceInfo(){
   const bet = Math.max(1, parseInt(d.bet.value||'0',10));
-  let t = Math.min(98, Math.max(2, parseInt(d.target.value||'50',10)));
+  const t = Math.min(11, Math.max(3, parseInt(d.target.value||'7',10)));
   d.target.value = t;
   const mode = d.mode.value;
-  let chance = mode==='under' ? (t-1)/100 : (100-t)/100;
-  chance = Math.max(0.01, Math.min(0.98, chance));
-  const mult = 0.95 / chance; // mic edge pentru demo
+  let chance = diceChance(mode, t);
+  chance = Math.max(1/36, Math.min(35/36, chance));
+  // payout „fair” cu mic edge 3%
+  const mult = 0.97 / chance;
   const pay = Math.floor(bet * mult);
   d.chance.textContent = (chance*100).toFixed(2);
   d.payout.textContent = fmt(pay);
@@ -431,37 +469,37 @@ updateDiceInfo();
 
 d.rollBtn.addEventListener('click', ()=>{
   const bet = Math.max(1, parseInt(d.bet.value||'0',10));
-  let t = Math.min(98, Math.max(2, parseInt(d.target.value||'50',10)));
+  const t = Math.min(11, Math.max(3, parseInt(d.target.value||'7',10)));
   const mode = d.mode.value;
   if(bet>balance){ alert('Fonduri insuficiente.'); return; }
   setBalance(balance - bet);
   d.rollBtn.disabled = true;
+  d.result.textContent = '';
 
-  let chance = mode==='under' ? (t-1)/100 : (100-t)/100;
-  chance = Math.max(0.01, Math.min(0.98, chance));
-  const mult = 0.95 / chance;
-  const payout = Math.floor(bet * mult);
-
-  let shown = 1;
+  // animație scurtă
+  let k=0;
   const anim = setInterval(()=>{
-    shown = Math.floor(1 + Math.random()*100);
-    d.rollEl.textContent = shown;
-  }, 35);
-
-  setTimeout(()=>{
-    clearInterval(anim);
-    const roll = Math.floor(1 + Math.random()*100);
-    d.rollEl.textContent = roll;
-    const win = (mode==='under') ? (roll < t) : (roll > t);
-    if(win){
-      setBalance(balance + payout);
-      d.result.innerHTML = `✅ <span class="${mode==='under'?'under':'over'}">${mode.toUpperCase()}</span> ${t}. Ai câștigat <b class="good">${fmt(payout)}</b> 🪙`;
-    }else{
-      d.result.innerHTML = `❌ Ai pierdut pariul (${fmt(bet)}).`;
+    const a = 1+Math.floor(Math.random()*6);
+    const b = 1+Math.floor(Math.random()*6);
+    d.faces.textContent = `${dieChar(a)} ${dieChar(b)}`;
+    if(++k>12) { clearInterval(anim);
+      const da = 1+Math.floor(Math.random()*6);
+      const db = 1+Math.floor(Math.random()*6);
+      const sum = da+db;
+      d.faces.textContent = `${dieChar(da)} ${dieChar(db)}`;
+      const win = (mode==='under') ? (sum < t) : (sum > t);
+      const chance = diceChance(mode, t);
+      const payout = Math.floor(bet * (0.97/Math.max(1/36,Math.min(35/36, chance))));
+      if(win){
+        setBalance(balance + payout);
+        d.result.innerHTML = `✅ Sumă ${sum}. Ai câștigat <b class="good">${fmt(payout)}</b> 🪙`;
+      }else{
+        d.result.innerHTML = `❌ Sumă ${sum}. Pariu pierdut (${fmt(bet)}).`;
+      }
+      d.rollBtn.disabled = false;
+      updateDiceInfo();
     }
-    d.rollBtn.disabled = false;
-    updateDiceInfo();
-  }, 900);
+  }, 60);
 });
 
 /* ================ CRASH ================ */
@@ -478,7 +516,7 @@ function randomCrashAt(){
   const U = Math.random();
   const k = 0.6;
   const val = 1.03 + (-Math.log(Math.max(1e-6, U))) * k;
-  return Math.min(10, Math.max(1.05, val));
+  return Math.min(12, Math.max(1.05, val));
 }
 function crashResetUI(){
   c.multEl.textContent = '1.00x';
@@ -500,9 +538,9 @@ c.startBtn.addEventListener('click', ()=>{
   crashResetUI();
 
   c.state.timer = setInterval(()=>{
-    c.state.mult = (c.state.mult + (c.state.mult<2 ? 0.03 : c.state.mult<4 ? 0.05 : 0.08));
-    c.multEl.textContent = c.state.mult.toFixed(2)+'x';
-    c.bar.style.width = Math.min(100, c.state.mult*10)+'%';
+    c.state.mult = (c.state.mult + (c.state.mult<2 ? 0.035 : c.state.mult<4 ? 0.06 : 0.09));
+    c.multEl.textContent = `🚀 ${c.state.mult.toFixed(2)}x`;
+    c.bar.style.width = Math.min(100, c.state.mult*8)+'%';
 
     if(c.state.mult >= c.state.crashAt){
       clearInterval(c.state.timer);
@@ -524,35 +562,31 @@ c.cashBtn.addEventListener('click', ()=>{
   c.startBtn.disabled = false;
 });
 
-/* ================ COINFLIP ================ */
+/* ================ COINFLIP (⭐ / ❤️) ================ */
 const cf = {
   bet: document.getElementById('cf_bet'),
   pick: document.getElementById('cf_pick'),
   btn: document.getElementById('cf_flip'),
-  show: document.getElementById('cf_show'),
+  coin: document.getElementById('coin'),
+  sym: document.getElementById('coinSymbol'),
   msg: document.getElementById('cf_msg')
 };
 cf.btn.addEventListener('click', ()=>{
   const bet = Math.max(1, parseInt(cf.bet.value||'0',10));
   if(bet>balance){ alert('Fonduri insuficiente.'); return; }
   setBalance(balance - bet);
-  cf.btn.disabled = true;
-  cf.msg.textContent = '';
-  let flips = 0, face='?';
-  const anim = setInterval(()=>{
-    face = (Math.random()<0.5)?'H':'T';
-    cf.show.textContent = (face==='H'?'Heads':'Tails');
-    flips++;
-  }, 80);
+  cf.btn.disabled = true; cf.msg.textContent = '';
+  cf.coin.classList.add('flip');
   setTimeout(()=>{
-    clearInterval(anim);
-    const res = (Math.random()<0.5)?'H':'T';
-    cf.show.textContent = (res==='H'?'Heads':'Tails');
+    cf.coin.classList.remove('flip');
+    const res = (Math.random()<0.5)?'star':'heart';
+    cf.sym.textContent = (res==='star'?'⭐':'❤️');
+    cf.sym.className = res==='star'?'star':'heart';
     const win = (res === cf.pick.value);
     if(win){
       const payout = Math.floor(bet * 1.98);
       setBalance(balance + payout);
-      cf.msg.innerHTML = `✅ Ai câștigat <b class="good">${fmt(payout)}</b> 🪙`;
+      cf.msg.innerHTML = `✅ ${res==='star'?'⭐':'❤️'} — câștig <b class="good">${fmt(payout)}</b> 🪙`;
     }else{
       cf.msg.innerHTML = `❌ Ai pierdut pariul (${fmt(bet)}).`;
     }
@@ -560,41 +594,89 @@ cf.btn.addEventListener('click', ()=>{
   }, 900);
 });
 
-/* ================ WHEEL (2×/14×) ================ */
+/* ================ WHEEL / ROULETTE (canvas) ================ */
 const wh = {
   bet: document.getElementById('wh_bet'),
   pick: document.getElementById('wh_pick'),
   btn: document.getElementById('wh_spin'),
-  res: document.getElementById('wh_res'),
-  msg: document.getElementById('wh_msg')
+  msg: document.getElementById('wh_msg'),
+  canvas: document.getElementById('wheelCanvas')
 };
-// distribuție: 24 red, 24 blue, 2 green (50 total)
-const wheelSegs = [...Array(24).fill('red'), ...Array(24).fill('blue'), 'green','green'];
+// segmente: 24 red, 24 blue, 2 green (total 50)
+const wheelSegs = [...Array(24).fill('red'), ...Array(24).fill('blue'), 'green', 'green'];
+const ctx = wh.canvas.getContext('2d');
+let wheelAngle = 0;
+
+function drawWheel(angle=0){
+  const cw = wh.canvas.width, ch = wh.canvas.height;
+  const cx = cw/2, cy = ch/2, r = Math.min(cx,cy)-10;
+  ctx.clearRect(0,0,cw,ch);
+  const slice = (Math.PI*2)/wheelSegs.length;
+  for(let i=0;i<wheelSegs.length;i++){
+    const start = angle + i*slice, end = start + slice;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,start,end);
+    const col = wheelSegs[i]==='red' ? '#ff6b6b' : wheelSegs[i]==='blue' ? '#72f5ff' : '#7aff9a';
+    const col2 = wheelSegs[i]==='red' ? '#b94b4b' : wheelSegs[i]==='blue' ? '#3bcfff' : '#35d785';
+    const grd = ctx.createLinearGradient(cx,cy-r,cx,cy+r);
+    grd.addColorStop(0,col);
+    grd.addColorStop(1,col2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+    ctx.strokeStyle = '#0f1638';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+  // centru
+  ctx.beginPath();
+  ctx.arc(cx,cy,40,0,Math.PI*2);
+  ctx.fillStyle = '#0f1739';
+  ctx.fill();
+  ctx.strokeStyle = '#18225a';
+  ctx.stroke();
+}
+drawWheel(wheelAngle);
+
 wh.btn.addEventListener('click', ()=>{
   const bet = Math.max(1, parseInt(wh.bet.value||'0',10));
   if(bet>balance){ alert('Fonduri insuficiente.'); return; }
   setBalance(balance - bet);
   wh.btn.disabled = true; wh.msg.textContent = '';
-  let ticks=0;
-  const anim = setInterval(()=>{
-    wh.res.textContent = wheelSegs[Math.floor(Math.random()*wheelSegs.length)].toUpperCase();
-    ticks++;
-  }, 60);
-  setTimeout(()=>{
-    clearInterval(anim);
-    const res = wheelSegs[Math.floor(Math.random()*wheelSegs.length)];
-    wh.res.textContent = res.toUpperCase();
-    let win=false, payout=0;
-    if(res===wh.pick.value){
-      win=true;
-      payout = Math.floor(bet * (res==='green' ? 14 : 2));
-      setBalance(balance + payout);
-      wh.msg.innerHTML = `✅ ${res.toUpperCase()} — câștig <b class="good">${fmt(payout)}</b> 🪙`;
-    }else{
-      wh.msg.innerHTML = `❌ A ieșit ${res.toUpperCase()}. Pariu pierdut (${fmt(bet)}).`;
+
+  const slice = (Math.PI*2)/wheelSegs.length;
+  // alege un index câștigător random
+  const idx = Math.floor(Math.random()*wheelSegs.length);
+  // țintă: pointerul e sus (unghi  -Math.PI/2). vrem ca mijlocul sectorului să ajungă acolo.
+  const targetAngle = -Math.PI/2 - (idx*slice + slice/2);
+  // adăugăm câteva ture + easing
+  const spins = 6 + Math.random()*2;
+  const endAngle = targetAngle + spins*2*Math.PI;
+
+  let start=null;
+  function anim(t){
+    if(!start) start = t;
+    const p = Math.min(1, (t-start)/2000); // 2 sec
+    // easeOutCubic
+    const eased = 1 - Math.pow(1-p,3);
+    wheelAngle = (1-eased)*wheelAngle + eased*endAngle;
+    drawWheel(wheelAngle);
+    if(p<1) requestAnimationFrame(anim);
+    else {
+      const res = wheelSegs[idx];
+      let payout=0, win=false;
+      if(res===wh.pick.value){
+        win = true;
+        payout = Math.floor(bet * (res==='green' ? 14 : 2));
+        setBalance(balance + payout);
+        wh.msg.innerHTML = `✅ ${res.toUpperCase()} — câștig <b class="good">${fmt(payout)}</b> 🪙`;
+      }else{
+        wh.msg.innerHTML = `❌ A ieșit ${res.toUpperCase()}. Pariu pierdut (${fmt(bet)}).`;
+      }
+      wh.btn.disabled = false;
     }
-    wh.btn.disabled = false;
-  }, 900);
+  }
+  requestAnimationFrame(anim);
 });
 
 /* ================ LIMBO ================ */
@@ -610,7 +692,6 @@ function updLimbo(){
   const bet = Math.max(1, parseInt(lb.bet.value||'0',10));
   let t = Math.max(1.10, Math.min(10.0, parseFloat(lb.target.value||'2')));
   lb.target.value = t.toFixed(2);
-  // payout ~ 0.97 * target
   lb.payout.textContent = fmt(Math.floor(bet * (0.97 * t)));
 }
 ['input','change'].forEach(ev=>{
@@ -618,14 +699,12 @@ function updLimbo(){
   lb.target.addEventListener(ev, updLimbo);
 });
 updLimbo();
-
 lb.btn.addEventListener('click', ()=>{
   const bet = Math.max(1, parseInt(lb.bet.value||'0',10));
   let t = Math.max(1.10, Math.min(10.0, parseFloat(lb.target.value||'2')));
   if(bet>balance){ alert('Fonduri insuficiente.'); return; }
   setBalance(balance - bet);
   lb.btn.disabled = true; lb.msg.textContent = '';
-  // generăm multiplier heavy-tail: 1/U, tăiat la 20x
   const U = Math.max(1e-6, Math.random());
   const result = Math.min(20, 1 / U);
   lb.roll.textContent = result.toFixed(2)+'×';
@@ -640,7 +719,7 @@ lb.btn.addEventListener('click', ()=>{
   updLimbo();
 });
 
-/* ================ TOWER ================ */
+/* ================ TOWER (BUGFIXED) ================ */
 const tw = {
   bet: document.getElementById('tw_bet'),
   start: document.getElementById('tw_start'),
@@ -652,65 +731,68 @@ const tw = {
   msg: document.getElementById('tw_msg'),
   state: { active:false, bet:0, level:0, bombs:[], win:0, mult:1.00 }
 };
-function twReset(){
+function twBuild(){
   tw.board.innerHTML = '';
-  tw.state.level = 0; tw.state.win = 0; tw.state.mult = 1.00;
-  tw.lvlEl.textContent = '0/8'; tw.multEl.textContent = '1.00×'; tw.winEl.textContent = '0';
-  tw.msg.textContent = '';
   tw.state.bombs = [];
-  // 8 niveluri, 3 cărămizi/level, 1 bombă/level (index 0..2)
   for(let i=0;i<8;i++){
-    tw.state.bombs.push(Math.floor(Math.random()*3));
     const row = document.createElement('div');
     row.className='towerRow';
-    const tag = document.createElement('div');
-    tag.className='levelTag';
-    tag.textContent = `L${i+1}`;
+    // bomb index
+    const bIdx = Math.floor(Math.random()*3);
+    tw.state.bombs.push(bIdx);
     for(let j=0;j<3;j++){
-      const b = document.createElement('div'); b.className='tw'; b.textContent='?';
-      ((lvl, idx, btn)=> {
-        btn.addEventListener('click', ()=>{
+      const b = document.createElement('div');
+      b.className='tw';
+      b.textContent='🧱';
+      ((lvl, idx, el)=>{
+        el.addEventListener('click', ()=>{
           if(!tw.state.active || lvl!==tw.state.level) return;
           if(tw.state.bombs[lvl] === idx){
-            btn.classList.add('bmb'); btn.textContent='💣';
+            el.classList.add('bmb'); el.textContent='💣';
             tw.msg.innerHTML = 'Boom! <span class="bad">Pariu pierdut.</span>';
             tw.state.active=false; tw.cash.disabled = true;
-            // dezvăluie restul la nivelul curent
+            // dezvăluie cele safe
             [...row.children].forEach((x,k)=>{ if(k!==idx){ x.classList.add('safe'); x.textContent='✔️'; }});
           }else{
-            btn.classList.add('safe'); btn.textContent='✔️';
+            el.classList.add('safe'); el.textContent='✔️';
             tw.state.level++;
-            // multiplicator crește cu 0.15/level
             tw.state.mult = 1 + tw.state.level*0.15;
             tw.state.win = Math.floor(tw.state.bet * tw.state.mult);
             tw.lvlEl.textContent = `${tw.state.level}/8`;
             tw.multEl.textContent = tw.state.mult.toFixed(2)+'×';
             tw.winEl.textContent = fmt(tw.state.win);
             tw.cash.disabled = false;
-            if(tw.state.level === 8){
-              tw.msg.innerHTML = `🏆 Max level! Poți retrage <b class="good">${fmt(tw.state.win)}</b> 🪙`;
-              tw.state.active=false; tw.cash.disabled = false;
+            if(tw.state.level===8){
+              tw.msg.innerHTML = `🏆 Max level! Retrage <b class="good">${fmt(tw.state.win)}</b> 🪙`;
+              tw.state.active=false; // poți încă să dai cash
+              tw.cash.disabled = false;
             }
           }
         });
-      })(i, j, b);
+      })(i,j,b);
       row.appendChild(b);
     }
     tw.board.appendChild(row);
   }
+  tw.lvlEl.textContent = '0/8';
+  tw.multEl.textContent = '1.00×';
+  tw.winEl.textContent = '0';
+  tw.msg.textContent = '';
 }
 tw.start.addEventListener('click', ()=>{
   const bet = Math.max(1, parseInt(tw.bet.value||'0',10));
   if(bet>balance){ alert('Fonduri insuficiente.'); return; }
   setBalance(balance - bet);
-  tw.state.active = true; tw.state.bet = bet; tw.cash.disabled = true;
-  twReset();
+  tw.state = { active:true, bet, level:0, bombs:[], win:0, mult:1.00 };
+  tw.cash.disabled = true;
+  twBuild();
 });
 tw.cash.addEventListener('click', ()=>{
-  if(!tw.state.active && tw.state.win<=0) return;
+  if(tw.state.win<=0) return; // poți retrage și dacă run-ul s-a terminat la max level
   setBalance(balance + tw.state.win);
   tw.msg.innerHTML = `✅ Retras <b class="good">${fmt(tw.state.win)}</b> 🪙`;
-  tw.state.active = false; tw.cash.disabled = true;
+  tw.state.active = false;
+  tw.cash.disabled = true;
 });
 
 /* ================ CODES (TAB) ================ */
